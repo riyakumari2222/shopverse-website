@@ -1,0 +1,2 @@
+<?php
+require_once __DIR__ . '/../config/config.php';require_admin();if($_SERVER['REQUEST_METHOD']!=='POST')redirect('/admin/index.php');verify_csrf();$id=filter_var($_POST['id']??null,FILTER_VALIDATE_INT);$status=$_POST['status']??'';$allowed=['Placed','Processing','Shipped','Delivered','Cancelled'];if($id&&in_array($status,$allowed,true)){$s=db()->prepare("UPDATE orders SET status=? WHERE id=?");$s->execute([$status,$id]);flash('Order status updated.');}else flash('Invalid order update.');redirect('/admin/index.php');
